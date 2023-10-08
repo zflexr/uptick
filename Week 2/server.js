@@ -2,6 +2,7 @@ const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
 const redisAdapter = require('socket.io-redis');
+require('dotenv').config()
 
 const port = process.argv[2] || 3000;
 
@@ -10,7 +11,7 @@ const server = http.createServer(app);
 const io = socketIo(server);
 
 // Use Redis as a message broker for Socket.io across multiple servers
-io.adapter(redisAdapter({ host: 'localhost', port: 6379 }));
+io.adapter(redisAdapter(process.env.REDIS_URL));
 
 // Handle incoming socket connections
 io.on('connection', (socket) => {
